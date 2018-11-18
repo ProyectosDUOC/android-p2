@@ -35,6 +35,8 @@ class ConexionSQL(val miContexto:Context,
 
     }
 
+    //agregar
+
     fun insertarCategoria(categoria: Categoria){
         try {
             val db = this.writableDatabase
@@ -55,18 +57,18 @@ class ConexionSQL(val miContexto:Context,
 
     }
 
-    fun insertarProveedor(pro: Proveedor){
+    fun insertarProveedor(prov: Proveedor){
         try {
             val db = this.writableDatabase
             var cv = ContentValues()
 
-            cv.put("nombreProveedor" , pro.nombreProveedor)
-            cv.put("nombreContacto" , pro.nombreContacto)
-            cv.put("rut" , pro.rut)
-            cv.put("telefono" , pro.telefono)
-            cv.put("email" , pro.email)
-            cv.put("fechaInscripcion" , pro.fechaInscripcion)
-            cv.put("estado" , pro.estado)
+            cv.put("nombreProveedor" , prov.nombreProveedor)
+            cv.put("nombreContacto" , prov.nombreContacto)
+            cv.put("rut" , prov.rut)
+            cv.put("telefono" , prov.telefono)
+            cv.put("email" , prov.email)
+            cv.put("fechaInscripcion" , prov.fechaInscripcion)
+            cv.put("estado" , prov.estado)
 
             val result = db.insert("proveedor", null, cv)
             db.close()
@@ -110,6 +112,7 @@ class ConexionSQL(val miContexto:Context,
 
     }
 
+    //Listar
     fun listarCategoria() : ArrayList<Categoria> {
         var lista = ArrayList<Categoria>()
         try {
@@ -211,4 +214,138 @@ class ConexionSQL(val miContexto:Context,
             return lista
         }
     }
+
+    //Eliminar
+
+    fun eliminarCategoria(id:Int){
+        try {
+            val db = this.writableDatabase
+            val args = arrayOf(id.toString())
+            val result = db.delete("categoria","idCategoria=?",args)
+            if (result ==0){
+                Toast.makeText(miContexto,"Categoria no eliminada - $args",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(miContexto,"Categoria eliminado",Toast.LENGTH_SHORT).show()
+            }
+        }catch (ex: SQLException){
+            Toast.makeText(miContexto,"error ${ex.message}",Toast.LENGTH_SHORT).show()
+            Log.e("sqlEliminar", ex.message)
+        }
+    }
+
+    fun eliminarProveedor(id:Int){
+        try {
+            val db = this.writableDatabase
+            val args = arrayOf(id.toString())
+            val result = db.delete("proveedor","idProveedor=?",args)
+            if (result ==0){
+                Toast.makeText(miContexto,"Proveedor no eliminado- $args",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(miContexto,"Proveedor eliminado",Toast.LENGTH_SHORT).show()
+            }
+        }catch (ex: SQLException){
+            Toast.makeText(miContexto,"error ${ex.message}",Toast.LENGTH_SHORT).show()
+            Log.e("sqlEliminar", ex.message)
+        }
+    }
+
+    fun eliminarProducto(id:Int){
+        try {
+            val db = this.writableDatabase
+            val args = arrayOf(id.toString())
+            val result = db.delete("producto","idProducto=?",args)
+            if (result ==0){
+                Toast.makeText(miContexto,"Producto no eliminado- $args",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(miContexto,"Producto eliminado",Toast.LENGTH_SHORT).show()
+            }
+        }catch (ex: SQLException){
+            Toast.makeText(miContexto,"error ${ex.message}",Toast.LENGTH_SHORT).show()
+            Log.e("sqlEliminar", ex.message)
+        }
+    }
+
+    //Actualizar
+
+    fun actualizarCategoria(cate: Categoria){
+        try{
+            val db = this.writableDatabase
+            var cv = ContentValues()
+
+            val args = arrayOf(cate.idCategoria.toString())
+            cv.put("mensaje" , cate.nombreCategoria)
+            cv.put("estado" , cate.estado)
+
+            val result = db.update("categoria",cv,"idCategoria=?",args)
+            db.close()
+            if (result==0){
+                Toast.makeText(miContexto,"Categoria no actualizada", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(miContexto,"Categoria actualizada", Toast.LENGTH_SHORT).show()
+            }
+        }catch (ex: Exception){
+            Toast.makeText(miContexto,"error ${ex.message}",Toast.LENGTH_SHORT).show()
+            Log.e("sqlActualizar",ex.message)
+        }
+    }
+
+    fun actualizarProveedor(prov: Proveedor){
+        try{
+            val db = this.writableDatabase
+            var cv = ContentValues()
+
+            val args = arrayOf(prov.idProveedor.toString())
+
+            cv.put("nombreProveedor" , prov.nombreProveedor)
+            cv.put("nombreContacto" , prov.nombreContacto)
+            cv.put("rut" , prov.rut)
+            cv.put("telefono" , prov.telefono)
+            cv.put("email" , prov.email)
+            cv.put("fechaInscripcion" , prov.fechaInscripcion)
+            cv.put("estado" , prov.estado)
+
+            val result = db.update("proveedor",cv,"idProveedor=?",args)
+            db.close()
+            if (result==0){
+                Toast.makeText(miContexto,"Proveedor no actualizado", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(miContexto,"Proveedor actualizado", Toast.LENGTH_SHORT).show()
+            }
+        }catch (ex: Exception){
+            Toast.makeText(miContexto,"error ${ex.message}",Toast.LENGTH_SHORT).show()
+            Log.e("sqlActualizar",ex.message)
+        }
+    }
+
+    fun actualizarProducto(pro: Producto){
+        try{
+            val db = this.writableDatabase
+            var cv = ContentValues()
+
+            val args = arrayOf(pro.idProducto.toString())
+
+            cv.put("nombre" , pro.nombre)
+            cv.put("cantidadDisponible" , pro.cantidadDisponible)
+            cv.put("precioSinIva" , pro.precioSinIva)
+            cv.put("precioConIva" , pro.precioConIva)
+            cv.put("precioDolar" , pro.PrecioDolar)
+            cv.put("idProveedor" , pro.idProveedor)
+            cv.put("idCategoria" , pro.idCategoria)
+            cv.put("estado" , pro.estado)
+
+            val result = db.update("producto",cv,"idProducto=?",args)
+            db.close()
+            if (result==0){
+                Toast.makeText(miContexto,"Producto no actualizado", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(miContexto,"Producto actualizado", Toast.LENGTH_SHORT).show()
+            }
+        }catch (ex: Exception){
+            Toast.makeText(miContexto,"error ${ex.message}",Toast.LENGTH_SHORT).show()
+            Log.e("sqlActualizar",ex.message)
+        }
+    }
+
+
+
 }
