@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.icu.util.Calendar
 import android.util.Log
 import android.widget.Toast
 import java.lang.Exception
@@ -41,7 +42,7 @@ class ConexionSQL(val miContexto:Context,
         try {
             val db = this.writableDatabase
             var cv = ContentValues()
-            cv.put("mensaje" , categoria.nombreCategoria)
+            cv.put("nombreCategoria" , categoria.nombreCategoria)
             cv.put("estado" , categoria.estado)
             val result = db.insert("categoria", null, cv)
             db.close()
@@ -273,7 +274,7 @@ class ConexionSQL(val miContexto:Context,
             var cv = ContentValues()
 
             val args = arrayOf(cate.idCategoria.toString())
-            cv.put("mensaje" , cate.nombreCategoria)
+            cv.put("nombreCategoria" , cate.nombreCategoria)
             cv.put("estado" , cate.estado)
 
             val result = db.update("categoria",cv,"idCategoria=?",args)
@@ -346,6 +347,56 @@ class ConexionSQL(val miContexto:Context,
         }
     }
 
+    //Buscar
+    fun buscarCategoria(idCate: Int) : Categoria?{
+        var categoria : Categoria? = null
+        try{
+            val db = this.writableDatabase
+            var cursor: Cursor? = null
 
+            cursor = db.rawQuery("SELECT * FROM categoria", null)
+            if (cursor?.moveToFirst() == true) {
+                do {
+                    if(idCate == cursor.getInt(0)){
+                        val id = cursor.getInt(0)
+                        val nombre = cursor.getString(1)
+                        val estado = cursor.getInt(2)
+                        categoria = Categoria(id,nombre,estado)
+                        break
+                    }
+                } while (cursor.moveToNext())
+            }
+            return categoria
+        }catch (ex: Exception){
+            Toast.makeText(miContexto,"error ${ex.message}",Toast.LENGTH_SHORT).show()
+            Log.e("sql Buscarr",ex.message)
+            return  null
+        }
+    }
 
+    fun buscarCategoriaNombre(nombre: String) : Categoria?{
+        var categoria : Categoria? = null
+        try{
+            val db = this.writableDatabase
+            var cursor: Cursor? = null
+
+            cursor = db.rawQuery("SELECT * FROM categoria", null)
+            if (cursor?.moveToFirst() == true) {
+                do {
+                    if(nombre.equals(cursor.getString(1).toUpperCase())){
+                        val id = cursor.getInt(0)
+                        val nombre = cursor.getString(1)
+                        val estado = cursor.getInt(2)
+                        categoria = Categoria(id,nombre,estado)
+                        break
+                    }
+                } while (cursor.moveToNext())
+            }
+            return categoria
+        }catch (ex: Exception){
+            Toast.makeText(miContexto,"error ${ex.message}",Toast.LENGTH_SHORT).show()
+            Log.e("sql Buscarr",ex.message)
+            return  null
+        }
+    }
 }
