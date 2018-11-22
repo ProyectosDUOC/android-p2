@@ -20,8 +20,38 @@
     <string name="produc">Productos</string>
     <string name="salir">Salir</string>
 
+    <string name="producto">Producto</string>
+
     <string name="reporte">Reportes</string>
 
+
+    <string name="nombrePro">Nombre Proveedor(Empresa)....</string>
+    <string name="nombreC">Nombre Contacto....</string>
+    <string name="rut">Rut (Empresa)....</string>
+    <string name="tel">Telefono....</string>
+    <string name="email">Email....</string>
+    <string name="FechaI">Fecha Inscripción</string>
+
+
+    <string name="nombreProducto">Nombre Producto....</string>
+    <string name="Cant">Cantidad Disponible....</string>
+    <string name="PrecioSinIva">Ingrese Valor....</string>
+    <string name="valor">$0</string>
+    <string name="Proveedor">Elegir Proveedor....</string>
+    <string name="Categoria">Elegir Categoria....</string>
+
+    <string name="cantidad">0</string>
+    <string name="valorS">Precio s/Iva:</string>
+    <string name="valorC">Precio con Iva:</string>
+    <string name="valorD">Precio Dolar:</string>
+
+    <string name="categoriaItem">Categoria:</string>
+    <string name="ProveedorItem">Proveedor:</string>
+    <string name="calcular">Calcular</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+
+
 </resources>

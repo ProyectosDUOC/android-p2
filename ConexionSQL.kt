@@ -12,9 +12,9 @@ import java.lang.Exception
 import java.sql.SQLException
 
 class ConexionSQL(val miContexto:Context,
-                  val nombre: String,
-                  val factory: SQLiteDatabase.CursorFactory?,
-                  val version: Int):SQLiteOpenHelper(miContexto,nombre,factory,version){
+            val factory: SQLiteDatabase.CursorFactory?,
+            val version: Int):SQLiteOpenHelper(miContexto,"miDB",factory,version){
+
 
     override fun onCreate(db: SQLiteDatabase?) {
         val query1 = "CREATE TABLE categoria(idCategoria INTEGER PRIMARY KEY AUTOINCREMENT,  nombreCategoria TEXT,estado INTEGER )"
@@ -175,25 +175,9 @@ class ConexionSQL(val miContexto:Context,
             val db = this.writableDatabase
             var cursor: Cursor? = null
 
-            cursor = db.rawQuery("SELECT * FROM proveedor", null)
+            cursor = db.rawQuery("SELECT * FROM producto", null)
             if (cursor?.moveToFirst() == true) {
                 do {
-
-                    /**
-                     *
-                     *    val query3 = "CREATE TABLE producto
-                     *    (idProducto INTEGER PRIMARY KEY AUTOINCREMENT,
-                     *    nombre TEXT,
-                     *    cantidadDisponible INTEGER,
-                     *    precioSinIva REAL,
-                     *    precioConIva REAL,
-                     *    precioDolar REAL,
-                     *    idProveedor INTEGER,
-                     *    idCategoria INTEGER,
-                     *    estado INTEGER )"
-
-                     * **/
-
                     val id = cursor.getInt(0)
                     val nombre = cursor.getString(1)
                     val cantDisponible = cursor.getInt(2)
@@ -393,6 +377,39 @@ class ConexionSQL(val miContexto:Context,
                 } while (cursor.moveToNext())
             }
             return categoria
+        }catch (ex: Exception){
+            Toast.makeText(miContexto,"error ${ex.message}",Toast.LENGTH_SHORT).show()
+            Log.e("sql Buscarr",ex.message)
+            return  null
+        }
+    }
+
+    fun buscarProveedor(idProve: Int) : Proveedor?{
+        var prove : Proveedor? = null
+        try{
+            val db = this.writableDatabase
+            var cursor: Cursor? = null
+
+            cursor = db.rawQuery("SELECT * FROM proveedor", null)
+            if (cursor?.moveToFirst() == true) {
+                do {
+                    if(idProve == cursor.getInt(0)){
+
+                        val id = cursor.getInt(0)
+                        val nombreProveedor = cursor.getString(1)
+                        val nombreContacto = cursor.getString(2)
+                        val rut = cursor.getString(3)
+                        val telefono = cursor.getString(4)
+                        val email = cursor.getString(5)
+                        val fechaInscripcion = cursor.getString(6)
+                        val estado = cursor.getInt(7)
+
+                        prove = Proveedor(id,nombreProveedor,nombreContacto,rut,telefono,email,fechaInscripcion,estado)
+
+                    }
+                } while (cursor.moveToNext())
+            }
+            return prove
         }catch (ex: Exception){
             Toast.makeText(miContexto,"error ${ex.message}",Toast.LENGTH_SHORT).show()
             Log.e("sql Buscarr",ex.message)

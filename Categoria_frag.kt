@@ -21,7 +21,6 @@ import win.bemtorres.servicio.controldeinventario.ConexionSQL
 class Categoria_frag : Fragment() {
 
     var miContexto : Context?= null
-    var nombreBD : String?= null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +43,7 @@ class Categoria_frag : Fragment() {
             }else{
                 nombre = txtNombre.text.toString()
             }
-            var conn = ConexionSQL(miContexto!!, nombreBD!!,null,1)
+            var conn = ConexionSQL(miContexto!!, null,1)
             var cate: Categoria? = conn.buscarCategoriaNombre(nombre)
 
             if (cate==null){
@@ -68,7 +67,7 @@ class Categoria_frag : Fragment() {
             }
 
 
-            var conn = ConexionSQL(miContexto!!, nombreBD!!,null,1)
+            var conn = ConexionSQL(miContexto!!,null,1)
             var encontrado = 0
             //Buscar si existe con el mismo nombre
 
@@ -91,9 +90,9 @@ class Categoria_frag : Fragment() {
         }
 
         boton2.setOnClickListener {
-            var conn = ConexionSQL(miContexto!!,nombreBD!!,null,1)
+            var conn = ConexionSQL(miContexto!!,null,1)
             val lista = conn.listarCategoria()
-            val adapter:AdapterCategoria = AdapterCategoria(miContexto!!, R.layout.item_categoria,lista,nombreBD!!)
+            val adapter:AdapterCategoria = AdapterCategoria(miContexto!!, R.layout.item_categoria,lista)
             list.adapter= adapter
         }
         return  view
@@ -101,7 +100,7 @@ class Categoria_frag : Fragment() {
 
 
 }
-class  AdapterCategoria(var miContexto:Context,var miRecurso:Int,var miLista:ArrayList<Categoria> , var nombreBD:String ):
+class  AdapterCategoria(var miContexto:Context,var miRecurso:Int,var miLista:ArrayList<Categoria>):
     ArrayAdapter<Categoria>(miContexto,miRecurso,miLista){
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -135,7 +134,7 @@ class  AdapterCategoria(var miContexto:Context,var miRecurso:Int,var miLista:Arr
 
             alerta.setMessage("¿Estás seguro que quieres $estado Categoria?")
             alerta.setPositiveButton("Si", { dialog, which ->
-                val db = ConexionSQL(miContexto,nombreBD, null, 1)
+                val db = ConexionSQL(miContexto, null, 1)
                 registro.estado = valor
                 db.actualizarCategoria(registro)
             })
