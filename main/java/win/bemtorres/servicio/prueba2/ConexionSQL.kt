@@ -416,4 +416,39 @@ class ConexionSQL(val miContexto:Context,
             return  null
         }
     }
+
+    fun buscarProducto(idProducto: Int) : Producto?{
+        var pro : Producto? = null
+        try{
+            val db = this.writableDatabase
+            var cursor: Cursor? = null
+
+            cursor = db.rawQuery("SELECT * FROM producto", null)
+            if (cursor?.moveToFirst() == true) {
+                do {
+                    if(idProducto == cursor.getInt(0)){
+
+                        val id = cursor.getInt(0)
+                        val nombre = cursor.getString(1)
+                        val cantDisponible = cursor.getInt(2)
+                        val precioS = cursor.getDouble(3)
+                        val precioC = cursor.getDouble(4)
+                        val precioD = cursor.getDouble(5)
+                        val idPro = cursor.getInt(6)
+                        val idCate = cursor.getInt(7)
+                        val estado = cursor.getInt(8)
+
+                        pro = Producto(id,nombre,cantDisponible,precioS,precioC,precioD,idPro,idCate,estado)
+                        break
+
+                    }
+                } while (cursor.moveToNext())
+            }
+            return pro
+        }catch (ex: Exception){
+            Toast.makeText(miContexto,"error ${ex.message}",Toast.LENGTH_SHORT).show()
+            Log.e("sql Buscar Producto",ex.message)
+            return  null
+        }
+    }
 }

@@ -25,6 +25,10 @@
         </activity>
         <activity android:name=".EditarCategoria">
         </activity>
+        <activity android:name=".EditarProducto">
+        </activity>
+        <activity android:name=".EditarProveedor">
+        </activity>
     </application>
 
 </manifest>

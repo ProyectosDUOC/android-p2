@@ -22,7 +22,7 @@ class AdapterProveedor(val miLista:ArrayList<Proveedor>?) : RecyclerView.Adapter
 
     //this method is returning the view for each item in the list
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterProveedor.ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_producto, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_proveedor, parent, false)
         return ViewHolder(v)
     }
 
@@ -88,9 +88,10 @@ class AdapterProveedor(val miLista:ArrayList<Proveedor>?) : RecyclerView.Adapter
             }
 
             boton2.setOnClickListener{
-
-               // var intento: Intent = Intent(vista.context,AgregarProveedor::class.java)
-               // ContextCompat.startActivity(vista.context, intento, null)
+                var id= prov.idProveedor
+                var intento: Intent = Intent(vista.context,EditarProveedor::class.java)
+                intento.putExtra("idProveedor",id)
+                ContextCompat.startActivity(vista.context, intento, null)
             }
 
 

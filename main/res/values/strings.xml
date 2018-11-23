@@ -56,8 +56,10 @@
     <string name="nombre">Nombre</string>
 
     <string name="Estado">Estado</string>
-    <string name="EditarCategoria">Edición Categoria</string>
+    <string name="EditarCategoria">Editar Categoria</string>
 
+    <string name="EditarProveedor">Edición Proveedor</string>
+    <string name="EditarProducto">Edición Producto</string>
 
     <string name="nombreCategoria">Nombre Categoría...</string>
 </resources>

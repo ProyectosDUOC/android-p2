@@ -89,8 +89,11 @@ class AdapterProducto (val miLista:ArrayList<Producto>?) : RecyclerView.Adapter<
                 alerta.show()
             }
             boton2.setOnClickListener {
-                //var intento: Intent = Intent(vista.context,AgregarProveedor::class.java)
-                //startActivity(vista.context, intento,null)
+
+                var id= prod.idProducto
+                var intento: Intent = Intent(vista.context,EditarProducto::class.java)
+                intento.putExtra("idProducto",id)
+                startActivity(vista.context, intento,null)
             }
 
 
