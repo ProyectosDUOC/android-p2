@@ -25,7 +25,7 @@ class Categoria_frag : Fragment() {
 
     var miContexto : Context?= null
     var adaptador:AdapterCategoria? = null
-
+    var list : RecyclerView? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,7 +36,7 @@ class Categoria_frag : Fragment() {
         val boton: Button = view.findViewById(R.id.btnAgregar)
         val boton2: Button = view.findViewById(R.id.btnListar)
         val boton3: Button = view.findViewById(R.id.btnBuscar)
-        var list : RecyclerView  = view.findViewById(R.id.lvlCategoria)
+        list  = view.findViewById(R.id.lvlCategoria)
         var txtNombre : EditText = view.findViewById(R.id.txtCategoria)
 
         boton3.setOnClickListener{
@@ -106,6 +106,20 @@ class Categoria_frag : Fragment() {
             //list.adapter= adapter
        }
        return  view
+    }
+
+    override fun onResume() {
+        var conn = ConexionSQL(miContexto!!,null,1)
+        val arrayCategoria = conn.listarCategoria()
+
+        if (arrayCategoria.size>0){
+            adaptador = AdapterCategoria(arrayCategoria!!)
+            list?.layoutManager = LinearLayoutManager(miContexto,LinearLayout.VERTICAL,false)
+            list?.adapter = adaptador
+        }else{
+            Toast.makeText(miContexto!!,"No hay Categorias", Toast.LENGTH_SHORT).show()
+        }
+        super.onResume()
     }
 }
 /*

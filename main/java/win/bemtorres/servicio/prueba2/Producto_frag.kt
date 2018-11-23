@@ -30,6 +30,7 @@ class Producto_frag : Fragment() {
 
     var miContexto : Context?= null
     var adaptador:AdapterProducto? = null
+    var lista : RecyclerView? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,7 +40,7 @@ class Producto_frag : Fragment() {
 
         var botonAgregar : Button = view.findViewById(R.id.btnAddProducto)
         var botonListar : Button = view.findViewById(R.id.btnListarProducto)
-        var lista : RecyclerView = view.findViewById(R.id.lv_Producto)
+        lista = view.findViewById(R.id.lv_Producto)
 
         botonAgregar.setOnClickListener {
             var intento: Intent = Intent(miContexto,AgregarProducto::class.java)
@@ -63,6 +64,19 @@ class Producto_frag : Fragment() {
 
         }
         return view
+    }
+
+    override fun onResume() {
+        var conn = ConexionSQL(miContexto!!,null,1)
+        val arrayProducto = conn.listarProducto()
+        if(arrayProducto.size>0){
+            adaptador = AdapterProducto(arrayProducto!!)
+            lista?.layoutManager = LinearLayoutManager(miContexto,LinearLayout.VERTICAL,false)
+            lista?.adapter = adaptador
+        }else{
+            Toast.makeText(miContexto!!,"No hay datos",Toast.LENGTH_SHORT).show()
+        }
+        super.onResume()
     }
 
 

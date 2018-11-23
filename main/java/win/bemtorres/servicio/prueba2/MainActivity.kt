@@ -24,11 +24,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        var conn = ConexionSQL(this,null,1)
+
+        if (conn.listarCategoria().size>0 && conn.listarProveedor().size>0){
+            fab.visibility = View.GONE
+        }
+
         fab.setOnClickListener { view ->
+
             var cate1 = Categoria(1,"Bebida",1)
             var cate2 = Categoria(1,"Torta",1)
             var cate3 = Categoria(1,"Pasta",1)
-            var conn = ConexionSQL(this,null,1)
+
             conn.insertarCategoria(cate1)
             conn.insertarCategoria(cate2)
             conn.insertarCategoria(cate3)
@@ -41,10 +48,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             var fecha: String = "$dia/$m/$anio"
 
 
-            var prove = Proveedor(1,"Spagetti","Benjamin", "1001-1","98882992","benja@spagetti.cl",fecha,1)
+            var prove = Proveedor(1,"CARROZZI","Benjamin", "1001-1","98882992","benja@spagetti.cl",fecha,1)
             conn.insertarProveedor(prove)
             fab.visibility = View.GONE
-
         }
 
         val toggle = ActionBarDrawerToggle(
@@ -108,7 +114,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 ft.commit()
             }
             R.id.nav_estadis -> {
-
+                val fm = supportFragmentManager
+                val ft = fm.beginTransaction()
+                val frag = Estadistica_frag()
+                frag.miContexto = this
+                ft.replace(R.id.ly_content,frag)
+                ft.commit()
             }
             R.id.nav_salir -> {
                 finish()

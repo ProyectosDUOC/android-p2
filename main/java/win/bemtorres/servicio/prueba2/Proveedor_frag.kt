@@ -22,6 +22,7 @@ class Proveedor_frag : Fragment() {
 
     var miContexto : Context?= null
     var adaptador:AdapterProveedor? = null
+    var list : RecyclerView? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,7 +34,7 @@ class Proveedor_frag : Fragment() {
         val botonAgregar: Button = view.findViewById(R.id.btnAgregarP)
         val botonListar: Button = view.findViewById(R.id.btnListarP)
 
-        var list : RecyclerView = view.findViewById(R.id.lv_Proveedor)
+       list = view.findViewById(R.id.lv_Proveedor)
 
 
         botonAgregar.setOnClickListener {
@@ -58,6 +59,24 @@ class Proveedor_frag : Fragment() {
             }
         }
         return view
+    }
+
+    override fun onResume() {
+        var conn = ConexionSQL(miContexto!!,null,1)
+        val arrayProveedor = conn.listarProveedor()
+        if(arrayProveedor.size>0){
+
+            adaptador = AdapterProveedor(arrayProveedor!!)
+            list?.layoutManager = LinearLayoutManager(miContexto,LinearLayout.VERTICAL,false)
+            list?.adapter = adaptador
+
+            //Metodo con lista
+            // val adapter:AdapterProveedor = AdapterProveedor(miContexto!!, R.layout.item_proveedor,lista)
+            // list.adapter= adapter
+        }else{
+            Toast.makeText(miContexto!!,"No hay datos",Toast.LENGTH_SHORT).show()
+        }
+        super.onResume()
     }
 }
 
